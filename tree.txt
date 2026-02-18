@@ -1,0 +1,109 @@
+.
+├── Dockerfile.template
+├── core.zip
+├── docker-compose.yml
+├── rebuild.sh
+├── services
+│   ├── core-auth
+│   │   ├── package.json
+│   │   └── src
+│   │       ├── core-auth-tenant.js
+│   │       ├── core-auth-user.js
+│   │       └── core-auth.js
+│   ├── core-smtp
+│   │   ├── package.json
+│   │   └── src
+│   │       └── core-smtp.js
+│   ├── core-sql
+│   │   ├── package.json
+│   │   └── src
+│   │       └── core-sql.js
+│   ├── core-www
+│   │   ├── package.json
+│   │   └── src
+│   │       └── core-www.js
+│   └── shared
+│       ├── core-logger.js
+│       └── core-utils.js
+├── tree.txt
+└── volumes
+    ├── core-auth
+    │   ├── config
+    │   ├── email
+    │   └── logs
+    │       ├── core-auth-2026-02-17.log
+    │       └── core-auth-2026-02-18.log
+    ├── core-db-auth
+    │   ├── data  [error opening dir]
+    │   ├── init
+    │   │   └── 001_core_auth_init.sql
+    │   └── testing
+    │       └── core-auth.postman_collection.json
+    ├── core-db-erp
+    │   ├── data  [error opening dir]
+    │   └── init
+    ├── core-db-object
+    │   ├── data  [error opening dir]
+    │   └── init
+    ├── core-smtp
+    │   ├── config
+    │   │   └── core-smtp.json
+    │   ├── email
+    │   │   ├── core-smtp-1771085490980-0129e4faeda8a.error.json
+    │   │   ├── core-smtp-1771093179548-51d3b8f0dc124.json
+    │   │   ├── core-smtp-1771093292512-45fe8e92edd3b.json
+    │   │   ├── core-smtp-1771358710506-0ae78b82015d1.json
+    │   │   ├── core-smtp-1771358726792-f6c6e4aea31f3.json
+    │   │   └── core-smtp-1771359170744-8e276ce40cfbc.json
+    │   └── logs
+    │       ├── core-smtp-2026-02-14.log
+    │       ├── core-smtp-2026-02-17.log
+    │       └── core-smtp-2026-02-18.log
+    ├── core-sql
+    │   ├── config
+    │   │   └── core-sql.json
+    │   └── logs
+    │       ├── core-sql-1771093556322-9f6de28457b83.error.json
+    │       ├── core-sql-1771093604921-7ae0da4035093.error.json
+    │       ├── core-sql-1771093663112-82154ecf3009a.json
+    │       ├── core-sql-1771357021271-98a7deb0fb28f.error.json
+    │       ├── core-sql-1771357159022-5c943a9e9949c.error.json
+    │       ├── core-sql-1771357226164-2225f9cc2cffd.error.json
+    │       ├── core-sql-1771357319694-ac66008d01ae.error.json
+    │       ├── core-sql-1771357859961-a8cf4735a70dd.error.json
+    │       ├── core-sql-1771358033447-a6af8d440d91.json
+    │       ├── core-sql-1771358090917-551f28b6ffcbb.error.json
+    │       ├── core-sql-1771358167558-71cf5b00ff638.json
+    │       ├── core-sql-1771358167737-63645f1bfb272.json
+    │       ├── core-sql-1771359170599-ab10f17377f84.json
+    │       ├── core-sql-1771359170688-3deea5eb34df2.json
+    │       ├── core-sql-1771359253340-e1a322eeba7a.json
+    │       ├── core-sql-1771359258997-57b91917e9e01.json
+    │       ├── core-sql-1771359259017-e32cb6aa6dac9.json
+    │       ├── core-sql-1771359259053-ecd4b6b08286f.json
+    │       ├── core-sql-1771359259088-ab4a734964e92.json
+    │       ├── core-sql-1771359259098-0011d88f1e7d2.json
+    │       ├── core-sql-1771359259161-65a2559df357e.json
+    │       ├── core-sql-1771359259194-2c9ed4925ad68.json
+    │       ├── core-sql-2026-02-14.log
+    │       ├── core-sql-2026-02-17.log
+    │       └── core-sql-2026-02-18.log
+    └── core-www
+        ├── config
+        │   ├── core-www.json
+        │   ├── hpcore.crt
+        │   └── hpcore.key
+        ├── logs
+        │   ├── core-www-2026-02-14.log
+        │   ├── core-www-2026-02-15.log
+        │   ├── core-www-2026-02-16.log
+        │   ├── core-www-2026-02-17.log
+        │   └── core-www-2026-02-18.log
+        └── public
+            ├── 404.html
+            ├── index.html
+            ├── login.css
+            ├── login.html
+            └── login.js
+
+37 directories, 70 files

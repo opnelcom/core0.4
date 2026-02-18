@@ -1,0 +1,27 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Logs
+*.log
+volumes/**/logs/
+volumes/**/email/
+
+# Database data directories
+volumes/**/data/
+
+# TLS / certificates / keys
+*.key
+*.crt
+*.pem
+
+# Local config files (if they contain secrets)
+volumes/**/config/*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+

@@ -1,0 +1,201 @@
+services:
+  core-www:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-www
+        SERVICESTART: core-www.js
+    container_name: core-www
+    environment:
+      SERVICE_NAME: core-www
+      PORT: "3000"
+      PUBLIC_PATH: /core/core-www/public
+      CONFIG_PATH: /core/core-www/config/core-www.json
+      LOG_PATH: /core/core-www/logs
+      LOG_LEVEL: debug
+      TLS_KEY_PATH: /core/core-www/config/hpcore.key
+      TLS_CERT_PATH: /core/core-www/config/hpcore.crt
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./volumes/core-www/config:/core/core-www/config
+      - ./volumes/core-www/public:/core/core-www/public
+      - ./volumes/core-www/logs:/core/core-www/logs
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 120s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  core-smtp:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-smtp
+        SERVICESTART: core-smtp.js
+    container_name: core-smtp
+    environment:
+      SERVICE_NAME: core-smtp
+      PORT: "3001"
+      CONFIG_PATH: /core/core-smtp/config/core-smtp.json
+      EMAIL_PATH: /core/core-smtp/emails
+      LOG_PATH: /core/core-smtp/logs
+      LOG_LEVEL: info
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./volumes/core-smtp/config:/core/core-smtp/config
+      - ./volumes/core-smtp/logs:/core/core-smtp/logs
+      - ./volumes/core-smtp/email:/core/core-smtp/emails
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  core-sql:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-sql
+        SERVICESTART: core-sql.js
+    container_name: core-sql
+    environment:
+      SERVICE_NAME: core-sql
+      PORT: "3002"
+      CONFIG_PATH: /core/core-sql/config/core-sql.json
+      LOG_PATH: /core/core-sql/logs
+      LOG_LEVEL: info
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./volumes/core-sql/config:/core/core-sql/config
+      - ./volumes/core-sql/logs:/core/core-sql/logs
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  core-db-auth:
+    image: postgres:16
+    container_name: core-db-auth
+    environment:
+      POSTGRES_DB: core-auth
+      POSTGRES_USER: core
+      POSTGRES_PASSWORD: corepass
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./volumes/core-db-auth/data:/var/lib/postgresql/data
+      - ./volumes/core-db-auth/init:/docker-entrypoint-initdb.d
+    networks:
+      - core-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U core -d core-auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  core-db-erp:
+    image: postgres:16
+    container_name: core-db-erp
+    environment:
+      POSTGRES_DB: core-erp
+      POSTGRES_USER: core
+      POSTGRES_PASSWORD: corepass
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./volumes/core-db-erp/data:/var/lib/postgresql/data
+      - ./volumes/core-db-erp/init:/docker-entrypoint-initdb.d
+    networks:
+      - core-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U core -d core-erp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  core-db-object:
+    image: postgres:16
+    container_name: core-db-object
+    environment:
+      POSTGRES_DB: core-object
+      POSTGRES_USER: core
+      POSTGRES_PASSWORD: corepass
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./volumes/core-db-object/data:/var/lib/postgresql/data
+      - ./volumes/core-db-object/init:/docker-entrypoint-initdb.d
+    networks:
+      - core-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U core -d core-object"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  core-auth:
+    container_name: core-auth
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-auth
+        SERVICESTART: core-auth.js
+    environment:
+      SERVICE_NAME: core-auth
+      PORT: "3003"
+      LOG_LEVEL: "info"
+      LOG_PATH: "/core/core-auth/logs"
+      TOKEN_EXPIRY: "300s"
+      LOGIN_EXPIRY: "604800s"
+      CORE_SQL_URL: "http://core-sql:3002/query"
+      CORE_SQL_DBID: "core_auth"
+      CORE_SMTP_URL: "http://core-smtp:3001"
+      CORE_SMTP_PATH: "/send"
+      CORE_SMTP_FROM: "joe@joppenheim.org"
+      CORE_SMTP_FROM_NAME: "Core"
+
+    ports:
+      - "3003:3003"
+
+    volumes:
+      - ./volumes/core-auth/logs:/core/core-auth/logs
+
+    depends_on:
+      - core-sql
+      - core-smtp
+
+    restart: unless-stopped
+
+    networks:
+      - core-network
+
+networks:
+  core-network:
+    name: core-network
+    driver: bridge

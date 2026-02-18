@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Core Auth</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <span class="small">API:</span>
+        <code id="apiBaseLabel"></code>
+      </div>
+      <div class="small">core-auth web</div>
+    </div>
+
+    <div class="card">
+      <header>
+        <h1>Core Auth</h1>
+        <p>Register → Activate → Login</p>
+      </header>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="login">Login</button>
+        <button class="tab" data-tab="register">Register</button>
+        <button class="tab" data-tab="activate">Activate</button>
+        <button class="tab" data-tab="forgot">Forgot Password</button>
+      </nav>
+
+      <div class="content">
+        <div id="globalMsg" class="msg hidden"></div>
+
+        <!-- LOGIN -->
+        <section id="login" class="panel active">
+          <label>Email</label>
+          <input id="loginEmail" type="email" />
+
+          <label>Password</label>
+          <input id="loginPassword" type="password" />
+
+          <label class="checkbox">
+            <input id="rememberMe" type="checkbox" />
+            Remember me
+          </label>
+
+          <button id="loginBtn">Login</button>
+          <div id="loginMsg" class="msg hidden"></div>
+        </section>
+
+        <!-- REGISTER -->
+        <section id="register" class="panel">
+          <label>Email</label>
+          <input id="regEmail" type="email" />
+
+          <label>Password</label>
+          <input id="regPassword" type="password" />
+
+          <button id="registerBtn">Register</button>
+          <div id="registerMsg" class="msg hidden"></div>
+        </section>
+
+        <!-- ACTIVATE -->
+        <section id="activate" class="panel">
+          <label>Email</label>
+          <input id="actEmail" type="email" />
+
+          <label>Token</label>
+          <input id="actToken" type="text" />
+
+          <button id="activateBtn">Activate</button>
+          <div id="activateMsg" class="msg hidden"></div>
+        </section>
+
+        <!-- FORGOT -->
+        <section id="forgot" class="panel">
+          <label>Email</label>
+          <input id="fpEmail" type="email" />
+
+          <label>Token (optional)</label>
+          <input id="fpToken" type="text" />
+
+          <label>New Password (if resetting)</label>
+          <input id="fpNewPassword" type="password" />
+
+          <button id="forgotBtn">Submit</button>
+          <div id="forgotMsg" class="msg hidden"></div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JS loaded at end for clean DOM-ready behavior -->
+  <script src="login.js"></script>
+</body>
+</html>

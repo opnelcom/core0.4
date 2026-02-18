@@ -1,0 +1,29 @@
+FROM node:20-alpine
+
+# ---- build arguments ----
+ARG SERVICENAME
+ARG SERVICESTART
+
+# ---- runtime env ----
+ENV SERVICENAME=${SERVICENAME}
+ENV SERVICESTART=${SERVICESTART}
+ENV NODE_ENV=production
+ENV SERVICE_DIR=/core/${SERVICENAME}
+
+# ---- working dir ----
+WORKDIR ${SERVICE_DIR}
+
+# ---- install deps ----
+COPY services/${SERVICENAME}/package.json ./
+RUN npm install --omit=dev
+
+# ---- copy source ---- (take note of trailing folder /)
+COPY services/${SERVICENAME}/src/ ./
+
+# ---- copy shared libs ----
+COPY services/shared /core/shared
+
+# ---- start command ---- (using the WORKDIR sas the starting enviroment)
+# CMD node ./$SERVICESTART  -- ignored. Refer to package.json main entry
+
+CMD ["sh", "-lc", "node ./$SERVICESTART"]

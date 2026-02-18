@@ -1,0 +1,9 @@
+{
+  "name": "core-www",
+  "version": "1.0.0",
+  "main": "core-www.js",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
