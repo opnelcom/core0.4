@@ -9,15 +9,19 @@ services:
     container_name: core-www
     environment:
       SERVICE_NAME: core-www
-      PORT: "3000"
       PUBLIC_PATH: /core/core-www/public
       CONFIG_PATH: /core/core-www/config/core-www.json
       LOG_PATH: /core/core-www/logs
       LOG_LEVEL: debug
-      TLS_KEY_PATH: /core/core-www/config/hpcore.key
+      ENABLE_HTTPS: "true"
+      ENABLE_HTTP_REDIRECT: "true"
+      HTTPS_PORT: "8443"
+      HTTP_PORT: "8080"
       TLS_CERT_PATH: /core/core-www/config/hpcore.crt
+      TLS_KEY_PATH: /core/core-www/config/hpcore.key
     ports:
-      - "3000:3000"
+      - "80:8080"
+      - "443:8443"
     volumes:
       - ./volumes/core-www/config:/core/core-www/config
       - ./volumes/core-www/public:/core/core-www/public
@@ -25,11 +29,11 @@ services:
     networks:
       - core-network
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
-      interval: 120s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
+      test: ["CMD-SHELL", "wget -qO- --no-check-certificate https://localhost:8443/health | grep -q '\"ok\":true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     restart: unless-stopped
 
   core-smtp:

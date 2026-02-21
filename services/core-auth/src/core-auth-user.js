@@ -46,9 +46,7 @@ async function insertUserLog(applicationContext, userEmail, message) {
 module.exports = function buildUserRouter(applicationContext) {
   const router = express.Router();
 
-  router.post(
-    "/register",
-    asyncHandler(async (request, response) => {
+  router.post("/register",asyncHandler(async (request, response) => {
       const email = String(request.body?.email || "").trim().toLowerCase();
       const password = String(request.body?.password || "");
       const nickName = String(request.body?.nick_name || "").trim();
@@ -117,9 +115,7 @@ module.exports = function buildUserRouter(applicationContext) {
     })
   );
 
-  router.post(
-    "/activate",
-    asyncHandler(async (request, response) => {
+  router.post("/activate",asyncHandler(async (request, response) => {
       const email = String(request.body?.email || "").trim().toLowerCase();
       const token = String(request.body?.token || "").trim();
 

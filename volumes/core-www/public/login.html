@@ -7,93 +7,191 @@
   <link rel="stylesheet" href="login.css" />
 </head>
 <body>
-
-  <div class="wrap">
-    <div class="topbar">
-      <div>
-        <span class="small">API:</span>
-        <code id="apiBaseLabel"></code>
+  <header class="site-header">
+    <div class="container header-wrap">
+      <div class="brand">
+        <div class="brand-title">Core Auth</div>
+        <div class="brand-subtitle">
+          Tabs for <span class="pill">register</span>
+          <span class="pill">activate</span>
+          <span class="pill">login</span>
+          <span class="pill">forgot password</span>
+        </div>
       </div>
-      <div class="small">core-auth web</div>
-    </div>
 
-    <div class="card">
-      <header>
-        <h1>Core Auth</h1>
-        <p>Register → Activate → Login</p>
-      </header>
-
-      <nav class="tabs">
-        <button class="tab active" data-tab="login">Login</button>
-        <button class="tab" data-tab="register">Register</button>
-        <button class="tab" data-tab="activate">Activate</button>
-        <button class="tab" data-tab="forgot">Forgot Password</button>
-      </nav>
-
-      <div class="content">
-        <div id="globalMsg" class="msg hidden"></div>
-
-        <!-- LOGIN -->
-        <section id="login" class="panel active">
-          <label>Email</label>
-          <input id="loginEmail" type="email" />
-
-          <label>Password</label>
-          <input id="loginPassword" type="password" />
-
-          <label class="checkbox">
-            <input id="rememberMe" type="checkbox" />
-            Remember me
-          </label>
-
-          <button id="loginBtn">Login</button>
-          <div id="loginMsg" class="msg hidden"></div>
-        </section>
-
-        <!-- REGISTER -->
-        <section id="register" class="panel">
-          <label>Email</label>
-          <input id="regEmail" type="email" />
-
-          <label>Password</label>
-          <input id="regPassword" type="password" />
-
-          <button id="registerBtn">Register</button>
-          <div id="registerMsg" class="msg hidden"></div>
-        </section>
-
-        <!-- ACTIVATE -->
-        <section id="activate" class="panel">
-          <label>Email</label>
-          <input id="actEmail" type="email" />
-
-          <label>Token</label>
-          <input id="actToken" type="text" />
-
-          <button id="activateBtn">Activate</button>
-          <div id="activateMsg" class="msg hidden"></div>
-        </section>
-
-        <!-- FORGOT -->
-        <section id="forgot" class="panel">
-          <label>Email</label>
-          <input id="fpEmail" type="email" />
-
-          <label>Token (optional)</label>
-          <input id="fpToken" type="text" />
-
-          <label>New Password (if resetting)</label>
-          <input id="fpNewPassword" type="password" />
-
-          <button id="forgotBtn">Submit</button>
-          <div id="forgotMsg" class="msg hidden"></div>
-        </section>
-
+      <div class="api-config">
+        <div class="config-grid">
+          <div class="config-label">API Base URL</div>
+          <input id="apiBase" class="input" placeholder="e.g. https://your-domain.com" />
+        </div>
+        <div class="hint">
+          Leave blank to use the same origin (recommended) and call <code>/auth/user/...</code>.
+          If you use a different domain/port, you’ll likely need CORS + cookies configured.
+        </div>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- JS loaded at end for clean DOM-ready behavior -->
+  <main class="container">
+    <div class="tabs" role="tablist" aria-label="Auth tabs">
+      <button class="tabbtn" role="tab" id="tab-register" aria-controls="panel-register" aria-selected="true">Register</button>
+      <button class="tabbtn" role="tab" id="tab-activate" aria-controls="panel-activate" aria-selected="false">Activate</button>
+      <button class="tabbtn" role="tab" id="tab-login" aria-controls="panel-login" aria-selected="false">Login</button>
+      <button class="tabbtn" role="tab" id="tab-forgot" aria-controls="panel-forgot" aria-selected="false">Forgot Password</button>
+    </div>
+
+    <!-- Register -->
+    <section class="panel active" role="tabpanel" id="panel-register" aria-labelledby="tab-register">
+      <h2>Register</h2>
+      <div class="row">
+        <div>
+          <label for="reg-email">Email</label>
+          <input id="reg-email" class="input" type="email" autocomplete="email" placeholder="you@example.com" />
+
+          <label for="reg-password">Password (min 8 chars)</label>
+          <input id="reg-password" class="input" type="password" autocomplete="new-password" />
+
+          <label for="reg-device">Device ID (optional)</label>
+          <input id="reg-device" class="input" type="text" placeholder="leave blank to auto-generate" />
+        </div>
+
+        <div>
+          <label for="reg-nick">Nick name (optional)</label>
+          <input id="reg-nick" class="input" type="text" />
+
+          <label for="reg-full">Full name (optional)</label>
+          <input id="reg-full" class="input" type="text" />
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-register">Create account</button>
+            <button class="btn btn-secondary" id="btn-register-filldevice">Generate device_id</button>
+          </div>
+
+          <div class="hint">
+            Calls <code>POST /auth/user/register</code>. You should receive an activation token by email.
+          </div>
+        </div>
+      </div>
+      <div class="status" id="reg-status">Ready.</div>
+    </section>
+
+    <!-- Activate -->
+    <section class="panel" role="tabpanel" id="panel-activate" aria-labelledby="tab-activate">
+      <h2>Activate account</h2>
+      <div class="row">
+        <div>
+          <label for="act-email">Email</label>
+          <input id="act-email" class="input" type="email" autocomplete="email" placeholder="you@example.com" />
+
+          <label for="act-token">Activation token</label>
+          <input id="act-token" class="input" type="text" placeholder="token from your email" />
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-activate">Activate</button>
+            <button class="btn btn-secondary" id="btn-activate-copyfromregister">Copy email from Register</button>
+          </div>
+
+          <div class="hint">
+            Calls <code>POST /auth/user/activate</code>.
+          </div>
+        </div>
+
+        <div>
+          <div class="hint">
+            Tip: If email sending isn’t configured in your environment, dev setups sometimes log the token server-side.
+          </div>
+        </div>
+      </div>
+      <div class="status" id="act-status">Ready.</div>
+    </section>
+
+    <!-- Login -->
+    <section class="panel" role="tabpanel" id="panel-login" aria-labelledby="tab-login">
+      <h2>Login</h2>
+      <div class="row">
+        <div>
+          <label for="log-email">Email</label>
+          <input id="log-email" class="input" type="email" autocomplete="email" placeholder="you@example.com" />
+
+          <label for="log-password">Password</label>
+          <input id="log-password" class="input" type="password" autocomplete="current-password" />
+        </div>
+
+        <div>
+          <label for="log-remember">Remember me</label>
+          <select id="log-remember" class="input">
+            <option value="false" selected>false (session ~ 1 day max)</option>
+            <option value="true">true (longer session)</option>
+          </select>
+
+          <label for="log-device-desc">Device description (optional)</label>
+          <input id="log-device-desc" class="input" type="text" placeholder="e.g. Chrome on Windows" />
+
+          <label for="log-device">Device ID (optional)</label>
+          <input id="log-device" class="input" type="text" placeholder="leave blank to use stored/generated device_id" />
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-login">Login</button>
+            <button class="btn btn-secondary" id="btn-login-filldevice">Use stored/generate device_id</button>
+          </div>
+
+          <div class="hint">
+            Calls <code>POST /auth/user/login</code> and expects cookies.
+          </div>
+        </div>
+      </div>
+      <div class="status" id="log-status">Ready.</div>
+    </section>
+
+    <!-- Forgot Password -->
+    <section class="panel" role="tabpanel" id="panel-forgot" aria-labelledby="tab-forgot">
+      <h2>Forgot password</h2>
+      <div class="row">
+        <div>
+          <h3 class="subhead">1) Request reset token</h3>
+
+          <label for="fp-email">Email</label>
+          <input id="fp-email" class="input" type="email" autocomplete="email" placeholder="you@example.com" />
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-fp-request">Send reset token</button>
+            <button class="btn btn-secondary" id="btn-fp-copyfromlogin">Copy email from Login</button>
+          </div>
+
+          <div class="hint">Calls <code>POST /auth/user/forgotpassword</code> with just <code>{ email }</code>.</div>
+        </div>
+
+        <div>
+          <h3 class="subhead">2) Reset using token</h3>
+
+          <label for="fp-token">Reset token</label>
+          <input id="fp-token" class="input" type="text" placeholder="token from your email" />
+
+          <label for="fp-newpass">New password (min 8 chars)</label>
+          <input id="fp-newpass" class="input" type="password" autocomplete="new-password" />
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-fp-reset">Reset password</button>
+          </div>
+
+          <div class="hint">Calls <code>POST /auth/user/forgotpassword</code> with <code>{ email, token, new_password }</code>.</div>
+        </div>
+      </div>
+
+      <div class="status" id="fp-status">Ready.</div>
+    </section>
+
+    <section class="footer-hint">
+      <div class="hint">
+        API endpoints used:
+        <code>/auth/user/register</code>,
+        <code>/auth/user/activate</code>,
+        <code>/auth/user/login</code>,
+        <code>/auth/user/forgotpassword</code>.
+      </div>
+    </section>
+  </main>
+
   <script src="login.js"></script>
 </body>
 </html>
