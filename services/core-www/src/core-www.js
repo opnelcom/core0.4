@@ -1,147 +1,114 @@
-const express = require("express");
-const path = require("path");
+"use strict";
+
 const fs = require("fs");
-const http = require("http");
-const https = require("https");
-const { makeLogger } = require("/core/shared/core-logger");
-const { readJson } = require("/core/shared/core-utils");
+const path = require("path");
+const express = require("express");
 
-const SERVICE_NAME = process.env.SERVICE_NAME || "core-www";
-
-// HTTP/HTTPS ports (separate so you can redirect 80 → 443)
-const HTTP_PORT = Number(process.env.HTTP_PORT || 80);
-const HTTPS_PORT = Number(process.env.HTTPS_PORT || 443);
-
-// If you only want the old single-port behavior, set ENABLE_HTTPS=false
-const ENABLE_HTTPS = (process.env.ENABLE_HTTPS || "true").toLowerCase() === "true";
-// If true, start an HTTP server that redirects all requests to https://...
-const ENABLE_HTTP_REDIRECT = (process.env.ENABLE_HTTP_REDIRECT || "true").toLowerCase() === "true";
-
-const CONFIG_PATH = process.env.CONFIG_PATH;
-const LOG_PATH = process.env.LOG_PATH;
-const LOG_LEVEL = process.env.LOG_LEVEL || "info";
-const PUBLIC_PATH = process.env.PUBLIC_PATH || path.join(process.cwd(), "public");
-
-const TLS_KEY_PATH = process.env.TLS_KEY_PATH || "/core/core-www/config/cert.key";
-const TLS_CERT_PATH = process.env.TLS_CERT_PATH || "/core/core-www/config/cert.crt";
-
-const logger = makeLogger({ serviceName: SERVICE_NAME, logPath: LOG_PATH, level: LOG_LEVEL });
-
-let config = {};
+// Shared libs (docker) or local fallback
+let makeLogger, readJson, nowIso;
 try {
-  if (CONFIG_PATH) config = readJson(CONFIG_PATH);
-} catch (e) {
-  logger.warn("Failed to load config; continuing with defaults", { error: String(e) });
+  ({ makeLogger } = require("/core/shared/core-logger"));
+  ({ readJson, nowIso } = require("/core/shared/core-utils"));
+} catch {
+  ({ makeLogger } = require("./core-logger"));
+  ({ readJson, nowIso } = require("./core-utils"));
 }
 
-const app = express();
-app.use(express.json());
+const SERVICE_NAME = process.env.SERVICE_NAME || "core-www";
+const PORT = Number(process.env.PORT || 3000);
 
-// request logging middleware (unchanged)
+const LOG_PATH = process.env.LOG_PATH || path.join(process.cwd(), "logs");
+const LOG_LEVEL = process.env.LOG_LEVEL || "info";
+
+const PUBLIC_PATH = process.env.PUBLIC_PATH || path.join(process.cwd(), "public");
+const DEFAULT_PAGE = process.env.DEFAULT_PAGE || "index.html";
+const CONFIG_PATH = process.env.CONFIG_PATH || "";
+
+function safeReadConfig(configPath) {
+  try {
+    if (!configPath) return null;
+    if (!fs.existsSync(configPath)) return { error: "CONFIG_PATH not found", path: configPath };
+    return readJson(configPath);
+  } catch (e) {
+    return { error: "Failed to parse config JSON", message: e.message };
+  }
+}
+
+const logger = makeLogger({
+  serviceName: SERVICE_NAME,
+  logPath: LOG_PATH,
+  level: LOG_LEVEL,
+  toConsole: true,
+  toTextFile: true,
+});
+
+const app = express();
+app.disable("x-powered-by");
+
+// Request logging
 app.use((req, res, next) => {
   const start = Date.now();
-
-  const reqMeta = {
-    method: req.method,
-    path: req.originalUrl,
-    ip: req.ip,
-    userAgent: req.get("user-agent"),
-  };
-
-  let bodyPreview;
-  if (req.is("application/json") && req.body && Object.keys(req.body).length) {
-    try {
-      const s = JSON.stringify(req.body);
-      bodyPreview = s.length > 2048 ? s.slice(0, 2048) + "...(truncated)" : s;
-    } catch {
-      bodyPreview = "[unserializable body]";
-    }
-  }
-
   res.on("finish", () => {
-    const ms = Date.now() - start;
-    const meta = {
-      ...reqMeta,
-      status: res.statusCode,
-      ms,
-      ...(bodyPreview ? { bodyPreview } : {}),
-    };
-    logger.debug("HTTP request", meta);
+    logger.info(`${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - start}ms)`);
   });
-
   next();
 });
 
-app.use("/", express.static(PUBLIC_PATH));
-app.get("/health", (req, res) => res.json({ service: SERVICE_NAME, ok: true }));
+app.get("/health", (req, res) => {
+  res.json({ ok: true, service: SERVICE_NAME, now: nowIso() });
+});
 
-app.use((req, res) => {
-  const file = path.join(PUBLIC_PATH, "404.html");
-
-  res.status(404);
-  res.sendFile(file, (err) => {
-    if (err) {
-      res.json({ error: "Not Found", path: req.originalUrl });
-    }
-  });
-
-  logger.error("404 Not Found", {
-    method: req.method,
-    path: req.originalUrl,
-    ip: req.ip,
+app.get("/meta", (req, res) => {
+  res.json({
+    service: SERVICE_NAME,
+    now: nowIso(),
+    publicPath: PUBLIC_PATH,
+    defaultPage: DEFAULT_PAGE,
+    configPath: CONFIG_PATH || null,
+    config: safeReadConfig(CONFIG_PATH),
   });
 });
 
-// ---- START SERVERS ----
+// Static file serving (NO SPA fallback)
+if (PUBLIC_PATH && fs.existsSync(PUBLIC_PATH)) {
+  app.use(
+    express.static(PUBLIC_PATH, {
+      index: DEFAULT_PAGE
+    })
+  );
 
-function startHttps() {
-  const tls = {
-    key: fs.readFileSync(TLS_KEY_PATH),
-    cert: fs.readFileSync(TLS_CERT_PATH),
-  };
-
-  https.createServer(tls, app).listen(HTTPS_PORT, () => {
-    logger.info("HTTPS service started", {
-      service: SERVICE_NAME,
-      httpsPort: HTTPS_PORT,
-      logLevel: LOG_LEVEL,
-      publicPath: PUBLIC_PATH,
-      configPath: CONFIG_PATH || null,
-      tlsKeyPath: TLS_KEY_PATH,
-      tlsCertPath: TLS_CERT_PATH,
+  // If file not found, return proper 404
+  app.use((req, res) => {
+    res.status(404).json({
+      ok: false,
+      error: "Not Found"
     });
   });
-}
-
-function startHttpRedirect() {
-  http.createServer((req, res) => {
-    // Respect Host header, but strip any port and force https
-    const host = (req.headers.host || "hpcore").split(":")[0];
-    const location = `https://${host}${req.url}`;
-    res.writeHead(301, { Location: location });
-    res.end();
-  }).listen(HTTP_PORT, () => {
-    logger.info("HTTP redirect started", {
-      service: SERVICE_NAME,
-      httpPort: HTTP_PORT,
-      redirectTo: "https",
-    });
-  });
-}
-
-if (ENABLE_HTTPS) {
-  startHttps();
-  if (ENABLE_HTTP_REDIRECT) startHttpRedirect();
 } else {
-  // legacy HTTP-only mode (kept for convenience)
-  const PORT = Number(process.env.PORT || 3000);
-  app.listen(PORT, () => {
-    logger.info("HTTP service started", {
-      service: SERVICE_NAME,
-      port: PORT,
-      logLevel: LOG_LEVEL,
-      publicPath: PUBLIC_PATH,
-      configPath: CONFIG_PATH || null,
-    });
-  });
+  logger.warn(`PUBLIC_PATH does not exist: ${PUBLIC_PATH}`);
+  app.get("*", (req, res) =>
+    res.status(500).json({ ok: false, error: "PUBLIC_PATH missing" })
+  );
 }
+
+// Start server
+const server = app.listen(PORT, () => {
+  logger.info(`Listening on port ${PORT}`);
+});
+
+// Graceful shutdown
+function shutdown(signal) {
+  logger.warn(`Received ${signal}, shutting down...`);
+  server.close(() => {
+    logger.info("Server closed. Bye!");
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    logger.error("Force exit after timeout");
+    process.exit(1);
+  }, 10000).unref();
+}
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));

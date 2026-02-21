@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20-alpine3.23
 
 # ---- build arguments ----
 ARG SERVICENAME
@@ -15,7 +15,9 @@ WORKDIR ${SERVICE_DIR}
 
 # ---- install deps ----
 COPY services/${SERVICENAME}/package.json ./
+RUN apk add --no-cache wget
 RUN npm install --omit=dev
+
 
 # ---- copy source ---- (take note of trailing folder /)
 COPY services/${SERVICENAME}/src/ ./

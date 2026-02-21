@@ -1,101 +1,4 @@
 services:
-  core-www:
-    build:
-      context: .
-      dockerfile: Dockerfile.template
-      args:
-        SERVICENAME: core-www
-        SERVICESTART: core-www.js
-    container_name: core-www
-    environment:
-      SERVICE_NAME: core-www
-      PUBLIC_PATH: /core/core-www/public
-      CONFIG_PATH: /core/core-www/config/core-www.json
-      LOG_PATH: /core/core-www/logs
-      LOG_LEVEL: debug
-      ENABLE_HTTPS: "true"
-      ENABLE_HTTP_REDIRECT: "true"
-      HTTPS_PORT: "8443"
-      HTTP_PORT: "8080"
-      TLS_CERT_PATH: /core/core-www/config/hpcore.crt
-      TLS_KEY_PATH: /core/core-www/config/hpcore.key
-    ports:
-      - "80:8080"
-      - "443:8443"
-    volumes:
-      - ./volumes/core-www/config:/core/core-www/config
-      - ./volumes/core-www/public:/core/core-www/public
-      - ./volumes/core-www/logs:/core/core-www/logs
-    networks:
-      - core-network
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- --no-check-certificate https://localhost:8443/health | grep -q '\"ok\":true'"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
-    restart: unless-stopped
-
-  core-smtp:
-    build:
-      context: .
-      dockerfile: Dockerfile.template
-      args:
-        SERVICENAME: core-smtp
-        SERVICESTART: core-smtp.js
-    container_name: core-smtp
-    environment:
-      SERVICE_NAME: core-smtp
-      PORT: "3001"
-      CONFIG_PATH: /core/core-smtp/config/core-smtp.json
-      EMAIL_PATH: /core/core-smtp/emails
-      LOG_PATH: /core/core-smtp/logs
-      LOG_LEVEL: info
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./volumes/core-smtp/config:/core/core-smtp/config
-      - ./volumes/core-smtp/logs:/core/core-smtp/logs
-      - ./volumes/core-smtp/email:/core/core-smtp/emails
-    networks:
-      - core-network
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-
-  core-sql:
-    build:
-      context: .
-      dockerfile: Dockerfile.template
-      args:
-        SERVICENAME: core-sql
-        SERVICESTART: core-sql.js
-    container_name: core-sql
-    environment:
-      SERVICE_NAME: core-sql
-      PORT: "3002"
-      CONFIG_PATH: /core/core-sql/config/core-sql.json
-      LOG_PATH: /core/core-sql/logs
-      LOG_LEVEL: info
-    ports:
-      - "3002:3002"
-    volumes:
-      - ./volumes/core-sql/config:/core/core-sql/config
-      - ./volumes/core-sql/logs:/core/core-sql/logs
-    networks:
-      - core-network
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-
   core-db-auth:
     image: postgres:16
     container_name: core-db-auth
@@ -162,6 +65,98 @@ services:
       retries: 5
       start_period: 15s
 
+  core-www:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-www
+        SERVICESTART: core-www.js
+    container_name: core-www
+    environment:
+      SERVICE_NAME: core-www
+      PUBLIC_PATH: /core/core-www/public
+      CONFIG_PATH: /core/core-www/config/core-www.json
+      LOG_PATH: /core/core-www/logs
+      LOG_LEVEL: debug
+      PORT: "3000"
+      DEFAULT_PAGE: index.html
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./volumes/core-www/config:/core/core-www/config
+      - ./volumes/core-www/public:/core/core-www/public
+      - ./volumes/core-www/logs:/core/core-www/logs
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  core-smtp:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-smtp
+        SERVICESTART: core-smtp.js
+    container_name: core-smtp
+    environment:
+      SERVICE_NAME: core-smtp
+      PORT: "3001"
+      CONFIG_PATH: /core/core-smtp/config/core-smtp.json
+      EMAIL_PATH: /core/core-smtp/emails
+      LOG_PATH: /core/core-smtp/logs
+      LOG_LEVEL: info
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./volumes/core-smtp/config:/core/core-smtp/config
+      - ./volumes/core-smtp/logs:/core/core-smtp/logs
+      - ./volumes/core-smtp/email:/core/core-smtp/emails
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  core-sql:
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-sql
+        SERVICESTART: core-sql.js
+    container_name: core-sql
+    environment:
+      SERVICE_NAME: core-sql
+      PORT: "3002"
+      CONFIG_PATH: /core/core-sql/config/core-sql.json
+      LOG_PATH: /core/core-sql/logs
+      LOG_LEVEL: info
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./volumes/core-sql/config:/core/core-sql/config
+      - ./volumes/core-sql/logs:/core/core-sql/logs
+    networks:
+      - core-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
   core-auth:
     container_name: core-auth
     build:
@@ -173,7 +168,7 @@ services:
     environment:
       SERVICE_NAME: core-auth
       PORT: "3003"
-      LOG_LEVEL: "info"
+      LOG_LEVEL: "debug"
       LOG_PATH: "/core/core-auth/logs"
       TOKEN_EXPIRY: "300s"
       LOGIN_EXPIRY: "604800s"
@@ -183,21 +178,55 @@ services:
       CORE_SMTP_PATH: "/send"
       CORE_SMTP_FROM: "joe@joppenheim.org"
       CORE_SMTP_FROM_NAME: "Core"
-
     ports:
       - "3003:3003"
-
     volumes:
       - ./volumes/core-auth/logs:/core/core-auth/logs
-
     depends_on:
       - core-sql
       - core-smtp
-
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     restart: unless-stopped
-
     networks:
       - core-network
+
+  core-gateway:
+    container_name: core-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        SERVICENAME: core-gateway
+        SERVICESTART: core-gateway.js
+    environment:
+      SERVICE_NAME: core-gateway
+      PORT: "8080"
+      LOG_LEVEL: "info"
+      LOG_PATH: "/core/core-gateway/logs"
+      CONFIG_PATH: "/core/core-gateway/config/core-gateway.json"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./volumes/core-gateway/config:/core/core-gateway/config
+      - ./volumes/core-gateway/logs:/core/core-gateway/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    networks:
+      - core-network
+    restart: unless-stopped
+    depends_on:
+      - core-www
+      - core-auth
+
 
 networks:
   core-network:

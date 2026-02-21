@@ -1,0 +1,18 @@
+{
+  "name": "core-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dynamic reverse proxy gateway for core services",
+  "main": "core-gateway.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node core-gateway.js",
+    "dev": "NODE_ENV=development node core-gateway.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
