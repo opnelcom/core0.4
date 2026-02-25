@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Core</title>
+
+  <link rel="stylesheet" href="assets/css/landing-structure1.css" />
+  <link rel="stylesheet" href="assets/css/landing-theme1.css" />
+</head>
+<body>
+  <div id="root" class="layout">
+
+    <!-- Header -->
+    <header class="headerbar">
+      <div class="brand">
+        <div class="logo">C</div>
+        <span class="brand-name">Core</span>
+      </div>
+
+      <div class="tenant-center">
+        <select id="tenantSelect"></select>
+      </div>
+
+      <div class="user-right">
+        <div class="user-meta">
+          <div id="userName" class="user-name"></div>
+          <div id="userEmail" class="user-email"></div>
+        </div>
+        <div class="user-actions">
+          <button id="btnProfile" class="btn">Profile</button>
+          <button id="btnChangePw" class="btn">Change Password</button>
+          <button id="btnLogout" class="btn primary">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <div class="main">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-title">Applications</div>
+          <button id="btnToggleNav" class="iconbtn">☰</button>
+        </div>
+        <nav id="appList" class="app-list"></nav>
+      </aside>
+
+      <section class="content">
+        <div class="content-top">
+          <div id="contentTitle" class="content-title"></div>
+          <div id="contentUrl" class="content-url"></div>
+        </div>
+        <div class="frame-wrap">
+          <iframe id="appFrame"></iframe>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <script src="assets/js/landing.js"></script>
+</body>
+</html>

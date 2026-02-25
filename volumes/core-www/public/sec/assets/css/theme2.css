@@ -1,0 +1,240 @@
+/* theme.css */
+/* =========================================================
+   THEME ONLY: variables + colors + gradients + glass + shadows
+   ========================================================= */
+
+:root {
+  /* layout constants */
+  --header-height: 72px;
+  --sidebar-width: 240px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  /* typography */
+  --font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  --font-size: 14px;
+
+  /* colors */
+  --color-text: rgba(255, 255, 255, 0.94);
+  --color-text-muted: rgba(255, 255, 255, 0.72);
+  --color-text-faint: rgba(255, 255, 255, 0.55);
+
+  --color-accent: rgba(19, 105, 132, 0.95);
+  --color-accent-2: rgba(50, 156, 179, 0.55);
+  --color-danger: rgba(194, 64, 79, 0.9);
+
+  --color-surface: rgba(24, 63, 82, 0.42);
+  --color-surface-strong: rgba(10, 52, 73, 0.62);
+  --color-surface-dark: rgba(7, 34, 48, 0.66);
+
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
+
+  /* effects */
+  --blur: 10px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.22);
+  --shadow-tight: 0 6px 18px rgba(0, 0, 0, 0.22);
+
+  /* background image (replace URL) */
+  --background-image: url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=70");
+  --background-overlay: linear-gradient(180deg, rgba(25, 89, 110, 0.25), rgba(0, 0, 0, 0.15));
+}
+
+/* page base */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--color-text);
+  background: #061c28;
+}
+
+/* background image belongs to main area, but we set a safe fallback here */
+.app-shell {
+  background: radial-gradient(1200px 800px at 20% -10%, rgba(52, 168, 190, 0.22), transparent 60%),
+    radial-gradient(900px 700px at 120% 30%, rgba(19, 105, 132, 0.25), transparent 55%),
+    #061c28;
+}
+
+/* generic glass cards */
+.pill,
+.sidebar-card,
+.main-card,
+.dialog-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+}
+
+.main-card {
+  background: linear-gradient(180deg, rgba(8, 45, 62, 0.45), rgba(8, 45, 62, 0.28));
+  border-color: var(--color-border);
+}
+
+.sidebar-card {
+  background: var(--color-surface-dark);
+}
+
+.topbar {
+  background: linear-gradient(90deg, rgba(10, 72, 92, 0.62), rgba(10, 72, 92, 0.42));
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+}
+
+/* pills & buttons */
+.pill {
+  border-radius: var(--radius-lg);
+}
+
+.pill-primary {
+  background: linear-gradient(180deg, rgba(14, 92, 118, 0.95), rgba(10, 68, 92, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-tight);
+  color: var(--color-text);
+}
+
+.pill-field {
+  background: rgba(18, 74, 95, 0.36);
+}
+
+.btn {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--color-border-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-danger {
+  background: rgba(194, 64, 79, 0.20);
+  border-color: rgba(194, 64, 79, 0.45);
+}
+
+.btn-danger:hover {
+  background: rgba(194, 64, 79, 0.28);
+}
+
+.icon-btn {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--color-border-strong);
+}
+
+.tenant-select {
+  color: var(--color-text);
+  background: transparent;
+}
+
+.tenant-select option {
+  color: #0b2331;
+}
+
+/* sidebar */
+.sidebar-title {
+  color: var(--color-text-muted);
+}
+
+.app-item {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: var(--color-text);
+}
+
+.app-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: var(--color-border-strong);
+}
+
+.app-item.active {
+  background: rgba(50, 156, 179, 0.18);
+  border-color: rgba(50, 156, 179, 0.40);
+}
+
+.app-desc {
+  color: var(--color-text-faint);
+}
+
+/* main background image shows behind translucent main-card */
+.main {
+  background-image: var(--background-overlay), var(--background-image);
+  background-size: cover;
+  background-position: center;
+}
+
+/* content */
+.main-heading-title {
+  color: var(--color-text-muted);
+}
+
+.content-url {
+  color: var(--color-text-faint);
+}
+
+.content-frame {
+  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* avatar */
+.avatar {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.15));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* dialogs */
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(50, 156, 179, 0.6);
+  box-shadow: 0 0 0 3px rgba(50, 156, 179, 0.18);
+}
+
+.field-label {
+  color: var(--color-text-muted);
+}
+
+.dialog-msg {
+  color: var(--color-text-faint);
+}
+
+/* toast */
+.toast {
+  background: rgba(7, 34, 48, 0.78);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-tight);
+  color: var(--color-text);
+}

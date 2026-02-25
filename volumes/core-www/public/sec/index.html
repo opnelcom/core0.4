@@ -1,0 +1,148 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Core</title>
+
+    <!-- Theme first (variables + visuals), then layout (structure only) -->
+    <link rel="stylesheet" href="assets\css\theme2.css" />
+    <link rel="stylesheet" href="assets\css\layout2.css" />
+
+    <script src="assets\js\index.js" defer></script>
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- Header -->
+      <header class="topbar" role="banner">
+        <div class="topbar-left">
+          <button class="pill pill-primary" type="button" aria-current="page">
+            Core
+          </button>
+        </div>
+
+        <div class="topbar-center">
+          <div class="pill pill-field tenant-pill" role="group" aria-label="Tenant selector">
+            <div class="pill-label">Tenants</div>
+            <select id="tenantSelect" class="tenant-select" aria-label="Tenants">
+              <option>Loading…</option>
+            </select>
+            <span class="caret" aria-hidden="true">▼</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button id="btnToggleNav" class="icon-btn" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">
+            ☰
+          </button>
+
+          <div class="user-pill pill pill-field" role="group" aria-label="User">
+            <div class="user-meta">
+              <div id="userName" class="user-name">—</div>
+              <div id="userEmail" class="user-email">—</div>
+            </div>
+            <div class="avatar" aria-hidden="true"></div>
+          </div>
+
+          <div class="header-actions" role="group" aria-label="Account actions">
+            <button id="btnProfile" class="btn" type="button">Profile</button>
+            <button id="btnChangePw" class="btn" type="button">Password</button>
+            <button id="btnLogout" class="btn btn-danger" type="button">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Body -->
+      <div class="body">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar" aria-label="Applications sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-title">Applications</div>
+            <div id="appList" class="app-list" role="list">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main" role="main">
+          <section class="main-card" aria-label="Application content">
+            <div class="main-heading">
+              <div class="main-heading-title">Application Content Window</div>
+            </div>
+
+            <div class="content-header">
+              <div class="content-title-wrap">
+                <div id="contentTitle" class="content-title">Select an application</div>
+                <div id="contentUrl" class="content-url"></div>
+              </div>
+            </div>
+
+            <div class="content-frame-wrap">
+              <iframe
+                id="appFrame"
+                class="content-frame"
+                title="Application frame"
+                referrerpolicy="no-referrer"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Profile dialog -->
+    <dialog id="profileDialog" class="dialog">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-title">Update profile</div>
+
+        <label class="field">
+          <span class="field-label">Full name</span>
+          <input id="profileFullName" class="input" type="text" autocomplete="name" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Nick name</span>
+          <input id="profileNickName" class="input" type="text" autocomplete="nickname" />
+        </label>
+
+        <div class="dialog-actions">
+          <button id="btnProfileSave" class="btn" value="default" type="button">Save</button>
+          <button class="btn btn-ghost" value="cancel" type="submit">Cancel</button>
+        </div>
+
+        <p id="profileMsg" class="dialog-msg" aria-live="polite"></p>
+      </form>
+    </dialog>
+
+    <!-- Password dialog -->
+    <dialog id="pwDialog" class="dialog">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-title">Change password</div>
+
+        <label class="field">
+          <span class="field-label">Old password</span>
+          <input id="pwOld" class="input" type="password" autocomplete="current-password" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">New password</span>
+          <input id="pwNew" class="input" type="password" autocomplete="new-password" />
+        </label>
+
+        <div class="dialog-actions">
+          <button id="btnPwSave" class="btn" value="default" type="button">Update</button>
+          <button class="btn btn-ghost" value="cancel" type="submit">Cancel</button>
+        </div>
+
+        <p id="pwMsg" class="dialog-msg" aria-live="polite"></p>
+      </form>
+    </dialog>
+
+    <!-- Simple toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

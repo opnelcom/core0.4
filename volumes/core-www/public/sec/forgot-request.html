@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Forgot password</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Reset password</h1>
+      <p class="muted">Request a reset token sent to your email.</p>
+    </header>
+
+    <section class="card">
+      <form id="forgotRequestForm" class="form" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <button class="btn primary" type="submit">Send reset token</button>
+
+        <p class="muted">
+          Already have a token?
+          <a href="forgot-reset.html">Reset using token</a>
+        </p>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/forgot-request.js"></script>
+</body>
+</html>

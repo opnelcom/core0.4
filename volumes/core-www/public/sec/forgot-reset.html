@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reset password (token)</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Set a new password</h1>
+      <p class="muted">Use the reset token sent to your email.</p>
+    </header>
+
+    <section class="card">
+      <form id="forgotResetForm" class="form" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span>Reset token</span>
+          <input id="token" name="token" type="text" autocomplete="one-time-code" required />
+        </label>
+
+        <label class="field">
+          <span>New password</span>
+          <input id="new_password" name="new_password" type="password" autocomplete="new-password" minlength="8" required />
+          <small class="hint">Minimum 8 characters.</small>
+        </label>
+
+        <button class="btn primary" type="submit">Update password</button>
+
+        <p class="muted">
+          Back to <a href="login.html">Log in</a>
+        </p>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/forgot-reset.js"></script>
+</body>
+</html>

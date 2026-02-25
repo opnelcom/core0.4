@@ -1,0 +1,29 @@
+/* Theme variables (change colors here to theme the whole app) */
+:root {
+  --bg: #0b1220;
+  --panel: #111a2e;
+  --panel-2: #0f172a;
+  --text: #e7eefc;
+  --muted: rgba(231, 238, 252, 0.70);
+
+  --primary: #6ea8ff;
+  --primary-2: #2f6feb;
+
+  --danger: #ff6b6b;
+  --success: #3ddc97;
+  --warning: #ffd166;
+
+  --border: rgba(231, 238, 252, 0.14);
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 20px;
+  --space-5: 28px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}

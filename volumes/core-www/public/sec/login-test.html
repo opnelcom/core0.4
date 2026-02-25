@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Simple Login Test</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { display: block; margin: 8px 0; padding: 6px; width: 300px; }
+    button { padding: 6px 12px; }
+    pre { background:#f3f3f3; padding:10px; margin-top:15px; }
+  </style>
+</head>
+<body>
+
+<h2>Simple Login Diagnostic</h2>
+
+<label>Email</label>
+<input id="email" type="text" value="joppenheim@opnel.com">
+
+<label>Password</label>
+<input id="password" type="password" value="Test1234">
+
+<label>
+  <input id="remember" type="checkbox" checked>
+  Remember me
+</label>
+
+<button id="loginBtn">Login</button>
+
+<h3>Result</h3>
+<pre id="result">(waiting)</pre>
+
+<h3>document.cookie</h3>
+<pre id="cookies">(none yet)</pre>
+
+<script>
+const resultEl = document.getElementById("result");
+const cookieEl = document.getElementById("cookies");
+
+function log(msg) {
+  console.log(msg);
+  resultEl.textContent = typeof msg === "string"
+    ? msg
+    : JSON.stringify(msg, null, 2);
+}
+
+function showCookies() {
+  cookieEl.textContent = document.cookie || "(no JS-visible cookies)";
+}
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  log("Sending login request...");
+  showCookies();
+
+  try {
+    const res = await fetch("/auth/user/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        remember_me: document.getElementById("remember").checked
+      })
+    });
+
+    const text = await res.text();
+
+    log({
+      status: res.status,
+      ok: res.ok,
+      body: text
+    });
+
+    showCookies();
+
+  } catch (err) {
+    log("ERROR: " + err.message);
+  }
+});
+
+showCookies();
+</script>
+
+</body>
+</html>

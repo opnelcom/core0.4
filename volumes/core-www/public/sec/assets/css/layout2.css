@@ -1,0 +1,413 @@
+/* layout.css */
+/* =========================================================
+   LAYOUT ONLY: structure, sizing, spacing, flex/grid
+   No hard-coded colors. Use variables from theme.css.
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.topbar {
+  height: var(--header-height);
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 2fr) 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+}
+
+.topbar-left,
+.topbar-center,
+.topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.topbar-left {
+  gap: 10px;
+}
+
+.topbar-center {
+  justify-content: center;
+}
+
+.topbar-right {
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Pills / controls */
+.pill {
+  padding: 12px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill-primary {
+  padding: 14px 22px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: default;
+  user-select: none;
+}
+
+.pill-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tenant-pill {
+  min-width: min(720px, 68vw);
+  justify-content: center;
+}
+
+.tenant-select {
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 6px 10px;
+  font-size: 14px;
+  min-width: 260px;
+  cursor: pointer;
+}
+
+.tenant-select:focus {
+  outline: none;
+}
+
+.caret {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* User block */
+.user-pill {
+  padding: 10px 12px;
+  gap: 12px;
+}
+
+.user-meta {
+  display: grid;
+  gap: 2px;
+}
+
+.user-name {
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.user-email {
+  font-size: 12px;
+  line-height: 1.1;
+  opacity: 0.9;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+/* Buttons */
+.btn,
+.icon-btn {
+  height: 38px;
+  padding: 0 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 44px;
+  padding: 0;
+  font-size: 18px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Body layout */
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  padding: 14px 12px;
+  min-height: 0;
+}
+
+.sidebar-card {
+  height: 100%;
+  border-radius: var(--radius-lg);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 2px 6px;
+}
+
+.app-list {
+  display: grid;
+  gap: 10px;
+  overflow: auto;
+  padding: 2px;
+}
+
+.app-item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.app-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.app-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.app-name {
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.app-desc {
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: 3px;
+}
+
+/* Main */
+.main {
+  padding: 14px 14px 18px;
+  min-height: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.main-card {
+  height: 100%;
+  border-radius: var(--radius-lg);
+  padding: 12px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.main-heading {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+
+.main-heading-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Content header */
+.content-header {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.content-title-wrap {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.content-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.content-url {
+  font-size: 12px;
+  word-break: break-all;
+  padding: 0 12px;
+}
+
+/* iframe */
+.content-frame-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.content-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+}
+
+/* Collapsed sidebar */
+.app-shell.nav-collapsed .body {
+  grid-template-columns: 76px 1fr;
+}
+
+.app-shell.nav-collapsed .sidebar-title {
+  font-size: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.app-shell.nav-collapsed .app-item {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.app-shell.nav-collapsed .app-name,
+.app-shell.nav-collapsed .app-desc {
+  display: none;
+}
+
+/* Dialogs */
+.dialog {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.dialog-card {
+  width: min(520px, 92vw);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.dialog-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.input {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+
+.dialog-msg {
+  margin: 0;
+  font-size: 12px;
+  min-height: 16px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  max-width: min(720px, 92vw);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 980px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 10px 12px;
+  }
+
+  .topbar-left {
+    justify-content: space-between;
+  }
+
+  .topbar-center {
+    justify-content: flex-start;
+  }
+
+  .topbar-right {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .tenant-pill {
+    min-width: 100%;
+    justify-content: flex-start;
+  }
+
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  .main {
+    order: 1;
+  }
+
+  .app-shell.nav-collapsed .body {
+    grid-template-columns: 1fr;
+  }
+}

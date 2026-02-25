@@ -1,0 +1,150 @@
+Build a responsive admin landing dashboard using:
+
+- HTML
+- Vanilla JavaScript (no frameworks)
+- TWO separate CSS files:
+    1) layout.css  → structure, positioning, spacing, flex/grid
+    2) theme.css   → colors, gradients, glass effect, shadows, background image
+- No external libraries
+
+========================================
+ARCHITECTURE
+========================================
+
+Deliver 4 files:
+
+1. index.html
+2. layout.css
+3. theme.css
+4. landing.js
+
+========================================
+CSS REQUIREMENTS
+========================================
+
+theme.css:
+- Define ALL colors and visual styling using CSS variables inside :root.
+- Example variables:
+    --color-bg-primary
+    --color-bg-panel
+    --color-accent
+    --color-text-primary
+    --color-text-muted
+    --color-border-soft
+    --sidebar-width
+    --header-height
+    --radius-large
+    --shadow-soft
+    --background-image (URL)
+
+- Apply glassmorphism style using:
+    backdrop-filter: blur(...)
+    semi-transparent backgrounds
+    subtle borders with low opacity
+
+- Set main background image using:
+    background-image: var(--background-image);
+
+layout.css:
+- Contains ONLY layout and structure:
+    - Flexbox or CSS Grid
+    - Positioning
+    - Sizing
+    - Spacing
+- NO hard-coded colors.
+- NO gradients.
+- NO theme values.
+- Only use CSS variables defined in theme.css.
+
+========================================
+UI STRUCTURE
+========================================
+
+Header (top bar):
+- Left: rounded pill button "Core"
+- Center: tenant dropdown (id="tenantSelect")
+- Right: user info panel:
+    - id="userName"
+    - id="userEmail"
+    - avatar placeholder
+    - buttons:
+        id="btnToggleNav"
+        id="btnProfile"
+        id="btnChangePw"
+        id="btnLogout"
+
+Sidebar:
+- id="sidebar"
+- Section label "Applications"
+- App list container id="appList"
+- Each app:
+    button.app-item
+        div.app-icon
+        div.app-name
+        div.app-desc
+- Active app has class "active"
+
+Main Content:
+- id="contentTitle"
+- id="contentUrl"
+- iframe id="appFrame"
+- Title text: “Application Content Window”
+
+========================================
+API INTEGRATION (landing.js)
+========================================
+
+Use fetch with:
+    credentials: "include"
+    headers: { "Content-Type": "application/json" }
+
+Endpoints:
+GET  /auth/user/me
+GET  /auth/user/apps
+POST /auth/user/logout
+POST /auth/user/changepassword
+POST /auth/user/update
+
+Behavior:
+- On load:
+    - Fetch /auth/user/me
+    - Populate tenant dropdown
+    - Fetch /auth/user/apps
+    - Populate app sidebar
+- If any fetch fails OR response.ok !== true:
+    redirect to login.html
+- Clicking app:
+    - Set active class
+    - Update iframe src
+    - Save selected app in localStorage
+- Persist:
+    localStorage keys:
+        core.selectedTenantId
+        core.sidebarCollapsed
+        core.lastAppCode
+
+========================================
+DESIGN STYLE
+========================================
+
+- Cool blue / teal theme
+- Rounded corners (12–18px)
+- Soft shadows
+- Translucent glass panels
+- Scenic background image visible behind content
+- Modern SaaS admin dashboard feel
+
+========================================
+IMPORTANT
+========================================
+
+- index.html must load:
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="layout.css">
+    <script src="landing.js" defer></script>
+
+- layout.css must NOT define colors.
+- theme.css must define ALL theme variables at the top.
+- Return the full content of all 4 files clearly separated.
+
+Return ONLY code.

@@ -1,0 +1,91 @@
+/* Theme variables only (colors). Switch by toggling [data-theme="dark"] on <html>. */
+
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #fbfbfe;
+
+  --text: #131624;
+  --muted: rgba(19, 22, 36, 0.72);
+
+  --border: rgba(19, 22, 36, 0.14);
+
+  --primary: #2f6bff;
+  --primary-ink: #ffffff;
+
+  --danger: #d43c3c;
+  --danger-ink: #ffffff;
+  --danger-border: rgba(212, 60, 60, 0.35);
+
+  --shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+html[data-theme="dark"] {
+  --bg: #0b1020;
+  --surface: #0f1730;
+  --surface-2: #101a36;
+
+  --text: #eef1ff;
+  --muted: rgba(238, 241, 255, 0.75);
+
+  --border: rgba(238, 241, 255, 0.14);
+
+  --primary: #7aa2ff;
+  --primary-ink: #0b1020;
+
+  --danger: #ff6b6b;
+  --danger-ink: #0b1020;
+  --danger-border: rgba(255, 107, 107, 0.32);
+
+  --shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.logo {
+  background: var(--primary);
+  color: var(--primary-ink);
+  box-shadow: var(--shadow);
+}
+
+.pill { color: var(--muted); background: transparent; }
+
+.input, .select {
+  background: transparent;
+  color: var(--text);
+}
+
+.input::placeholder { color: var(--muted); }
+
+.btn {
+  background: var(--primary);
+  color: var(--primary-ink);
+  border-color: transparent;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+}
+.btn-danger {
+  background: var(--danger);
+  color: var(--danger-ink);
+  border-color: transparent;
+}
+
+.icon-btn { color: var(--text); }
+
+.table td, .table th { color: var(--text); }
+.muted, .hint { color: var(--muted); }
+
+.error {
+  background: rgba(212, 60, 60, 0.10);
+  color: var(--text);
+}
+
+.toast {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}

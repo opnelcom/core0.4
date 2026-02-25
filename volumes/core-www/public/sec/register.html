@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Create account</h1>
+      <p class="muted">Register to receive an activation code by email.</p>
+    </header>
+
+    <section class="card">
+      <form id="registerForm" class="form" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+          <small class="hint">Minimum 8 characters.</small>
+        </label>
+
+        <label class="field">
+          <span>Device ID (optional)</span>
+          <input id="device_id" name="device_id" type="text" autocomplete="off" placeholder="Leave blank to auto-generate" />
+          <small class="hint">Used to bind sessions to a device.</small>
+        </label>
+
+        <button class="btn primary" type="submit">Register</button>
+        <p class="muted">
+          Already have an account?
+          <a href="login.html">Log in</a>
+        </p>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/register.js"></script>
+</body>
+</html>

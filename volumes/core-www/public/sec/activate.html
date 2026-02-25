@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Activate account</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Activate account</h1>
+      <p class="muted">Enter the activation token sent to your email.</p>
+    </header>
+
+    <section class="card">
+      <form id="activateForm" class="form" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span>Activation token</span>
+          <input id="token" name="token" type="text" autocomplete="one-time-code" required />
+        </label>
+
+        <button class="btn primary" type="submit">Activate</button>
+
+        <p class="muted">
+          Need an activation token?
+          <a href="register.html">Register again</a> (it will resend if not yet activated).
+        </p>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/activate.js"></script>
+</body>
+</html>

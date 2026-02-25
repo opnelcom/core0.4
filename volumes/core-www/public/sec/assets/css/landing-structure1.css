@@ -1,0 +1,141 @@
+:root {
+  --header-height: 56px;
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 72px;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout {
+  display: grid;
+  grid-template-rows: var(--header-height) 1fr;
+  height: 100%;
+}
+
+/* Header */
+.headerbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.tenant-center {
+  display: flex;
+  justify-content: center;
+}
+
+.user-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-meta {
+  text-align: right;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Main area */
+.main {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.app-list {
+  overflow: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.app-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.app-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.content {
+  display: grid;
+  grid-template-rows: 40px 1fr;
+  min-height: 0;
+}
+
+.content-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.frame-wrap {
+  min-height: 0;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Collapsed sidebar */
+.collapsed .main {
+  grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+}
+
+.collapsed .app-item {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.collapsed .app-name {
+  display: none;
+}

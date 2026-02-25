@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Log in</h1>
+      <p class="muted">Use your email and password to start a session.</p>
+    </header>
+
+    <section class="card">
+      <form id="loginForm" class="form" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </label>
+
+        <label class="check">
+          <input id="remember_me" name="remember_me" type="checkbox" />
+          <span>Remember me</span>
+        </label>
+
+        <label class="field">
+          <span>Device ID (optional)</span>
+          <input id="device_id" name="device_id" type="text" autocomplete="off" placeholder="Leave blank to use existing cookie / auto-generate" />
+        </label>
+
+        <button class="btn primary" type="submit">Log in</button>
+
+        <div class="row">
+          <a href="forgot-request.html">Forgot password?</a>
+          <a href="register.html">Create account</a>
+        </div>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/login.js"></script>
+</body>
+</html>
