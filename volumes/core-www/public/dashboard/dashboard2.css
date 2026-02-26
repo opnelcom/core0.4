@@ -1,0 +1,127 @@
+/* =========================
+   Theme Variables
+   ========================= */
+:root{
+  --header-height: 80px;
+  --sidebar-width: 200px;
+
+  --background-color: #000000; /* fallback */
+  /* --background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470"); */
+  --background-size: cover;
+  --background-position: center;
+
+  --panel-bg: rgba(117, 117, 117, 0.295);
+  --panel-corner: 14px;
+  --panel-padding: 10px;
+
+  --font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-color: rgba(255, 255, 255, 0.95);
+
+  --grid-border-color: rgba(255, 255, 255, 0);
+
+  --panel-shadow: 0 4px 8px rgba(204, 190, 190, 0.0), 0 12px 30px rgba(218, 201, 201, 0.0);
+}
+
+/* =========================
+   Reset
+   ========================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* =========================
+   Page Layout (header row + content row)
+   ========================= */
+.area-body{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows: var(--header-height) 1fr;
+
+  background-color: var(--background-color);
+  background-image: var(--background-image);
+  background-size: var(--background-size);
+  background-position: var(--background-position);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--font-color);
+}
+
+/* =========================
+   Header (logo | tenants | user)
+   ========================= */
+.area-header{
+  display:grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+
+  /* ensures header children stretch to full header height */
+  align-items: stretch;
+
+  padding: var(--panel-padding);
+  gap: var(--panel-padding);
+
+  border-bottom: 1px solid var(--grid-border-color);
+}
+
+/* =========================
+   Content Wrapper (sidebar | main)
+   ========================= */
+.area-content{
+  display:grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+
+  padding: var(--panel-padding);
+  gap: var(--panel-padding);
+}
+
+/* =========================
+   Grid Cells (all grid-* containers)
+   ========================= */
+.grid-logo,
+.grid-tenants,
+.grid-user,
+.grid-sidebar,
+.grid-main{
+  display:grid;
+
+  /* ensures panels inside can stretch */
+  align-items: stretch;
+
+  border: 1px solid var(--grid-border-color);
+}
+
+/* =========================
+   Panels
+   ========================= */
+.panel{
+  background: var(--panel-bg);
+  border-radius: var(--panel-corner);
+  padding: 12px;
+  backdrop-filter: blur(6px);
+  box-shadow: var(--panel-shadow);
+
+  /* fill their grid cell (incl. header panels when header height changes) */
+  width: 100%;
+  height: 100%;
+}
+
+.panel--logo,
+.panel--tenant{
+  display: grid;
+  place-items: center;  /* vertical + horizontal centering */
+}
+.panel--user{
+  display: grid;
+  place-items: right;  /* vertical + horizontal centering */
+}
+
+.panel--user{
+  display: grid;
+  align-items: center;     /* vertical center */
+  justify-items: end;      /* horizontal right */
+}

@@ -1,0 +1,314 @@
+/* =========================
+   Theme Variables
+   ========================= */
+:root{
+  --header-height: 80px;
+  --sidebar-width: 240px;
+
+  --background-color: #0b1220; /* fallback */
+  --background-image: url("https://images.unsplash.com/photo-1500534623283-312aade485b7");
+  --background-size: cover;
+  --background-position: center;
+
+  --panel-bg: rgba(0, 0, 0, 0.55);
+  --panel-corner: 14px;
+  --panel-padding: 10px;
+
+  --font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-color: rgba(255, 255, 255, 0.95);
+
+  --grid-border-color: rgba(255, 255, 255, 0);
+}
+
+/* =========================
+   Reset
+   ========================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* =========================
+   Page Layout (header row + content row)
+   ========================= */
+.area-body{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows: var(--header-height) 1fr;
+
+  background-color: var(--background-color);
+  background-image: var(--background-image);
+  background-size: var(--background-size);
+  background-position: var(--background-position);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--font-color);
+}
+
+/* =========================
+   Header (logo | tenants | user)
+   ========================= */
+.area-header{
+  display:grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+
+  /* ensures header children stretch to full header height */
+  align-items: stretch;
+
+  padding: var(--panel-padding);
+  gap: var(--panel-padding);
+
+  border-bottom: 1px solid var(--grid-border-color);
+}
+
+/* =========================
+   Content Wrapper (sidebar | main)
+   ========================= */
+.area-content{
+  display:grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+
+  padding: var(--panel-padding);
+  gap: var(--panel-padding);
+}
+
+/* =========================
+   Grid Cells (all grid-* containers)
+   ========================= */
+.grid-logo,
+.grid-tenants,
+.grid-user,
+.grid-sidebar,
+.grid-main{
+  display:grid;
+
+  /* ensures panels inside can stretch */
+  align-items: stretch;
+
+  border: 1px solid var(--grid-border-color);
+}
+
+/* =========================
+   Panels
+   ========================= */
+.panel{
+  background: var(--panel-bg);
+  border-radius: var(--panel-corner);
+  padding: 12px;
+  backdrop-filter: blur(6px);
+
+  /* fill their grid cell (incl. header panels when header height changes) */
+  width: 100%;
+  height: 100%;
+}
+
+.panel--logo,
+.panel--tenant{
+  display: grid;
+  place-items: center;  /* vertical + horizontal centering */
+}
+.panel--user{
+  display: grid;
+  place-items: right;  /* vertical + horizontal centering */
+}
+
+.panel--user{
+  display: grid;
+  align-items: center;     /* vertical center */
+  justify-items: end;      /* horizontal right */
+}
+
+/* Make the main panel control sizing */
+.panel--main{
+  display: grid;       /* creates a layout context */
+  padding: 0;          /* remove padding so iframe matches panel edges */
+}
+
+/* iframe fills the panel exactly */
+.main-frame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* =========================
+   Tenant Dropdown
+   ========================= */
+
+.tenant-label{
+  display:block;
+  margin-bottom:6px;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.tenant-select{
+  width:50%;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  background: rgba(231, 229, 229, 0.4);
+  color: var(--font-color);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
+  outline: none;
+  cursor: pointer;
+}
+
+.tenant-select:focus{
+  border-color: rgba(255,255,255,0.35);
+}
+
+.tenant-select:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+
+/* =========================
+   Tenant Row Layout
+   ========================= */
+
+.tenant-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tenant-label{
+  margin: 0;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+.tenant-select{
+  flex: 1;
+}
+
+/* =========================
+   Application List
+   ========================= */
+
+.apps-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.apps-title{
+  font-size:0.95rem;
+  font-weight:600;
+  letter-spacing:0.5px;
+  opacity:0.85;
+}
+
+.apps-badge{
+  font-size:0.75rem;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(4px);
+}
+
+/* Message */
+.apps-message{
+  font-size:0.85rem;
+  opacity:0.7;
+  margin-bottom:10px;
+}
+
+/* List Container */
+.apps-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+
+/* Individual App Item */
+.apps-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  width:100%;
+  padding:10px 12px;
+
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.08);
+
+  background:rgba(0,0,0,0.25);
+  color:var(--font-color);
+
+  cursor:pointer;
+  transition:all 0.15s ease;
+  text-align:left;
+}
+
+/* Hover */
+.apps-item:hover{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(255,255,255,0.18);
+  transform:translateY(-1px);
+}
+
+/* Active (when selected) */
+.apps-item.active{
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(255,255,255,0.28);
+}
+
+/* Icon Container */
+.apps-icon{
+  width:32px;
+  height:32px;
+  min-width:32px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:10px;
+  background:rgba(255,255,255,0.06);
+}
+
+/* Make SVG scale properly */
+.apps-icon svg{
+  width:18px;
+  height:18px;
+}
+
+/* Text Container */
+.apps-meta{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  overflow:hidden;
+}
+
+/* App Name */
+.apps-name{
+  font-weight:600;
+  font-size:0.9rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Description */
+.apps-desc{
+  font-size:0.8rem;
+  opacity:0.65;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}

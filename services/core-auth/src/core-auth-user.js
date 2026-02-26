@@ -205,7 +205,7 @@ module.exports = function buildUserRouter(applicationContext) {
         FROM core_apps
         WHERE enabled = true
           AND ($1::boolean = true OR admin_app = false)
-        ORDER BY name ASC
+        ORDER BY sort_order ASC
       `,
       params: [isAdmin],
     });

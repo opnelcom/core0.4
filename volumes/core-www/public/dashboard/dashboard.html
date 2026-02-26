@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="dashboard1.css">
+</head>
+
+<body class="area-body">
+
+    <header class="area-header">
+        <div class="grid-logo">
+            <div class="panel panel--logo">logo</div>
+        </div>
+
+        <div class="grid-tenants">
+            <div class="panel panel--tenant">
+                <div class="tenant-row">
+                    <label class="tenant-label" for="tenantSelect">Tenant</label>
+                    <select id="tenantSelect" class="tenant-select"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-user">
+            <div class="panel panel--user">
+                <span id="headerUser">User loading...</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="area-content">
+        <div class="grid-sidebar">
+            <div class="panel panel--sidebar">
+                <div class="apps-header">
+                    <div class="apps-title">Applications</div>
+                    <div id="appsBadge" class="apps-badge" hidden>Admin</div>
+                </div>
+
+                <div id="appsMessage" class="apps-message muted">Loading…</div>
+                <ul id="appsList" class="apps-list" aria-label="Application list"></ul>
+            </div>
+        </div>
+
+        <div class="grid-main">
+            <div class="panel panel--main">
+                <iframe id="appFrame" class="main-frame" src="" frameborder="0">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

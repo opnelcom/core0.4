@@ -1,0 +1,42 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="assets\css\theme3.css">
+    <link rel="stylesheet" href="assets\css\layout3.css">
+    <script src="assets\js\dashboard3.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <button class="core-btn">Core</button>
+        <select id="tenantSelect"></select>
+        <div class="user-panel">
+            <div class="avatar"></div>
+            <div class="user-info">
+                <div id="userName"></div>
+                <div id="userEmail"></div>
+            </div>
+            <div class="user-actions">
+                <button id="btnToggleNav">☰</button>
+                <button id="btnProfile">Profile</button>
+                <button id="btnChangePw">Change Password</button>
+                <button id="btnLogout">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+        <h2>Applications</h2>
+        <div id="appList" class="app-list"></div>
+    </aside>
+
+    <main class="main-content">
+        <h1 id="contentTitle">Application Content Window</h1>
+        <p id="contentUrl"></p>
+        <iframe id="appFrame"></iframe>
+    </main>
+</body>
+</html>
